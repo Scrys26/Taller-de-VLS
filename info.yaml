@@ -1,7 +1,7 @@
 # Tiny Tapeout project information
 project:
   title:        "tt_um_example"      # Project title
-  author:       "Randy Fernandez Aguilar"      # Your name
+  author:       "Randy"      # Your name
   discord:      ""      # Your discord username, for communication and automatically assigning you a Tapeout role (optional)
   description:  "Mux de 4 entradas"      # One line description of what your project does
   language:     "SystemVerilog" # other examples include SystemVerilog, Amaranth, VHDL, etc
