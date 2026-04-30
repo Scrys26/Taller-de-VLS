@@ -27,12 +27,12 @@ module tt_um_example (
 
 
 
-  wire _unused = &{ena, clk, rst_n, uio_in[7:1], 1'b0};
+  wire _unused = &{ena, clk, rst_n, uio_in [7:1], 1'b0};
 
   assign uio_oe[0]= 1'b0:
 
 
-  mux_2to1_4b U0(
+  mux_2to1_4b U0 (
     .a_i (ui_in[3:0]),
     .b_i(ui_in[7:4]),
     .s_i(uio_in[0]),
