@@ -19,7 +19,7 @@ module tt_um_example (
 );
 
   // All output pins must be assigned. If not used, assign to 0.
-  assign uo_out [7:4]=0 ;  // Example: ou_out is the sum of ui_in and uio_in
+  assign uo_out [7:0]=0 ;  // Example: ou_out is the sum of ui_in and uio_in
   assign uio_out = 0;
   assign uio_oe = 0;
 
@@ -27,7 +27,7 @@ module tt_um_example (
   //wire _unused = &{ena, clk, rst_n, uio_in [7:1], 1'b0};
 
   wire _unused = &{ena , uio_in [7:1], 1'b0};
-  //assign uio_oe [0]= 1'b0;
+  assign uio_oe [0]= 1'b0;
 
   /*mux_2to1_4b U0(
     .a_i(ui_in [3:0]),
