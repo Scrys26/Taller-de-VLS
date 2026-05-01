@@ -18,47 +18,52 @@ module tt_um_example (
     input  wire       rst_n     // reset_n - low to reset
 );
 
-  // All output pins must be assigned. If not used, assign to 0.
-  //assign uo_out [7:4]=0 ;  // Example: ou_out is the sum of ui_in and uio_in
-  //assign uio_out = 0;
-  //assign uio_oe [7:1] = 0;
+  // UART_gen_netlist uses active-high reset.
+  wire reset;
+
+  // Internal UART signals.
+  wire       tx;
+  wire       tx_rdy;
+  wire       rx_data_rdy;
+  wire [7:0] uart_data_out;
 
   assign reset = ~rst_n;
-  assign uio_out = 0;
-  assign uio_oe = 0;
 
-  // List all unused inputs to prevent warnings
-  //wire _unused = &{ena, clk, rst_n, uio_in [7:1], 1'b0};
+  // Dedicated outputs: received byte from UART receiver.
+  assign uo_out = uart_data_out;
 
-  wire _unused = &{ena, ui_in[7:1], uio_in, 1'b0};
+  // Bidirectional pins used by the UART wrapper:
+  // uio_in[0]  -> rx
+  // uio_in[1]  -> tx_start
+  // uio_out[2] -> tx
+  // uio_out[3] -> tx_rdy
+  // uio_out[4] -> rx_data_rdy
+  assign uio_out[1:0] = 2'b00;
+  assign uio_out[2]   = tx;
+  assign uio_out[3]   = tx_rdy;
+  assign uio_out[4]   = rx_data_rdy;
+  assign uio_out[7:5] = 3'b000;
 
-  // wire para interconectar
+  // uio[0] and uio[1] are inputs. uio[2], uio[3] and uio[4] are outputs.
+  assign uio_oe[1:0] = 2'b00;
+  assign uio_oe[2]   = 1'b1;
+  assign uio_oe[3]   = 1'b1;
+  assign uio_oe[4]   = 1'b1;
+  assign uio_oe[7:5] = 3'b000;
 
-  wire [7:0] uart_data;
-  wire       uart_rdy;
-  wire       reset;
-
-  /*mux_2to1_4b U0(
-      .a_i(ui_in [3:0]),
-      .b_i(ui_in [7:4]),
-      .s_i(uio_in [0]),
-      .q_o(uo_out [3:0]));
-  */
-
-  UART_rx U1 (
-    .clk         (clk),
-    .reset       (reset),
-    .rx_data_in  (ui_in[0]),
-    .rx_data_rdy (uart_rdy),
-    .rx_data_out (uart_data)
+  UART U0 (
+    .clk          (clk),
+    .reset        (reset),
+    .tx_start     (uio_in[1]),
+    .tx_rdy       (tx_rdy),
+    .rx_data_rdy  (rx_data_rdy),
+    .data_in      (ui_in),
+    .data_out     (uart_data_out),
+    .rx           (uio_in[0]),
+    .tx           (tx)
   );
 
-  reg_pp_8b_en_ar U0 (
-    .clk_i   (clk),
-    .rst_n_i (rst_n),
-    .d_i     (uart_data),
-    .en_i    (uart_rdy),
-    .q_o     (uo_out)
-  );
+  // List all unused inputs to prevent warnings.
+  wire _unused = &{ena, uio_in[7:2], 1'b0};
 
 endmodule
