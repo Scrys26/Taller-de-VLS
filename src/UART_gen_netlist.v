@@ -5,7 +5,7 @@
 // Verification Directory fv/UART 
 
 `timescale 1ns/1ps
-
+`default_nettype wire
 module UART_rx(clk, reset, rx_data_in, rx_data_rdy, rx_data_out);
   input clk, reset, rx_data_in;
   output rx_data_rdy;
