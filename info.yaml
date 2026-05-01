@@ -20,7 +20,7 @@ project:
     - "project.v"
    # - "mux_2to1_4b.v" 
     - "reg_pp_8b_en_ar.v" 
-    - "UART_rx"
+    - "UART_gen_netlist"
 
 # The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.
 # This section is for the datasheet/website. Use descriptive names (e.g., RX, TX, MOSI, SCL, SEG_A, etc.).
